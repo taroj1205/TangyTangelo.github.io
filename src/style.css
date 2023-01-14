@@ -4,6 +4,8 @@
     width: 100%;
     display: block;
     position: fixed;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .navbar {
@@ -40,5 +42,34 @@
     border: 2px solid;
     margin-top: 75px;
     width: 95%;
-    
+}
+
+.cell {
+    width: 80px;
+    height: 80px;
+    border: 2px solid lightgrey;
+    line-height: 80px;
+    font-size: 50px;
+    text-align: center;
+    color: lightgrey;
+    cursor: pointer;
+}
+
+.cell:hover {
+    background-color: #A0BACC;
+}
+
+#containGame {
+    font-family: 'Times New Roman';
+}
+
+#containCells {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    width: 240px;
+    margin:auto;
+}
+
+button {
+    cursor: pointer;
 }
