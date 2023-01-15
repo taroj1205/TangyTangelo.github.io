@@ -11,6 +11,10 @@ const winConditions = [
         [0, 4, 8],
         [2, 4, 6]
     ];
+const sliderValue = document.getElementById("difficultySlider").value
+
+var slider = document.getElementById("difficultySlider");
+var output = document.getElementById("titleDifficulty");
 
 let options = ["", "", "", "", "", "", "", "", ""];
 let currentPlayer = "X";
@@ -77,3 +81,5 @@ function restartGame() {
 };
 
 initGame();
+
+document.getElementById("difficultySlider").value = "1";

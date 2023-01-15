@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="src/style.css">
     <style>
-        h1 {
+        .slidecontainer {
             text-align: center;
             font-size: 60px;
             color: lightgrey
@@ -39,7 +39,11 @@
         <hr class="divider">
 
         <div id="containGame">
-            <h1>Tic Tac Toe</h1>
+            <div class="slidecontainer">
+                <p>Tic Tac Toe - <span id="difficultyTitle">2 Player</span></p>
+                <input type="range" min="1" max="4" value="1" id="difficultySlider" oninput="difficultyTitle.innerHTML=['2 Player','Place holder','Place holder','Place holder'][Number(this.value)-1];">
+            </div>
+            <h1 id="titleDifficulty"></h1>
             <div id="containCells">
                 <div cellIndex="0" class="cell"></div>
                 <div cellIndex="1" class="cell"></div>
