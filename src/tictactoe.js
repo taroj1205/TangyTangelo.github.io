@@ -11,14 +11,14 @@ const winConditions = [
         [0, 4, 8],
         [2, 4, 6]
     ];
-const sliderValue = document.getElementById("difficultySlider").value
-
-var slider = document.getElementById("difficultySlider");
-var output = document.getElementById("titleDifficulty");
+const sliderValue = document.getElementById("difficultySlider")
+const slider = document.getElementById("difficultySlider");
+const output = document.getElementById("titleDifficulty");
 
 let options = ["", "", "", "", "", "", "", "", ""];
 let currentPlayer = "X";
 let gameRunning = false;
+let AIPlayer = "O";
 
 function initGame() {
     cells.forEach(cell => cell.addEventListener("click", cellClicked));
@@ -26,26 +26,30 @@ function initGame() {
     statusText.textContent = `${currentPlayer}'s turn`;
     gameRunning = true;
 };
+
 function cellClicked() {
     const cellIndex = this.getAttribute("cellIndex");
 
     if (options[cellIndex] != "" || !gameRunning) {
         return;
     };
-
     updateCell(this, cellIndex);
-    checkWinner();
 };
+
 function updateCell(cell, index) {
     options[index] = currentPlayer;
     cell.textContent = currentPlayer;
+    
+    checkWinner();
 };
-function changePlayer() {
+
+function changePlayer() {    
     currentPlayer = (currentPlayer == "X") ? "O" : "X";
     statusText.textContent = `${currentPlayer}'s turn`;
 };
+
 function checkWinner() {
-    var roundWon = false;
+    let roundWon = false;
     for (let i = 0; i < winConditions.length; i++) {
         const condition = winConditions[i];
         const cellA = options[condition[0]];
@@ -69,9 +73,21 @@ function checkWinner() {
         statusText.textContent = `draw!`;
         running = false;
     } else {
+        continueGameMode();
+    };
+};
+
+function continueGameMode() {
+    if (sliderValue.value == "1") {
         changePlayer();
     }
-};
+    if (sliderValue.value == "2") {
+        changePlayer();
+        if (currentPlayer == AIPlayer)
+            AInextTurnRandom();
+    }
+}
+
 function restartGame() {
     currentPlayer = "X";
     options = ["", "", "", "", "", "", "", "", ""];
@@ -80,6 +96,22 @@ function restartGame() {
     cells.forEach(cell => cell.addEventListener("click", cellClicked))
 };
 
+function AInextTurnRandom() {
+    available = [];
+    for (i = 0; i < 9; i++) {
+        if (options[i] == "") {
+            available.push(i)
+        }
+    }
+    let value = available[Math.floor(Math.random()*available.length)]
+    updateCell(document.querySelector(`[cellIndex="${value}"]`), value);
+};
+
 initGame();
 
-document.getElementById("difficultySlider").value = "1";
+//restart game when slider changes
+
+slider.oninput((ev) => {
+    restartGame();
+});
+//document.getElementById("difficultySlider").value = "1";

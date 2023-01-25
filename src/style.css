@@ -1,11 +1,11 @@
 .background {
     background-color: #5f605d;
     left: 0;
-    width: 100%;
+    width: 100vmax;
+    height: 100vmax;
     display: block;
     position: fixed;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: auto;
 }
 
 .navbar {
