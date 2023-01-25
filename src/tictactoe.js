@@ -84,7 +84,7 @@ function continueGameMode() {
     if (sliderValue.value == "2") {
         changePlayer();
         if (currentPlayer == AIPlayer)
-            AInextTurnRandom();
+            randomMove();
     }
 }
 
@@ -96,7 +96,7 @@ function restartGame() {
     cells.forEach(cell => cell.addEventListener("click", cellClicked))
 };
 
-function AInextTurnRandom() {
+function randomMove() {
     available = [];
     for (i = 0; i < 9; i++) {
         if (options[i] == "") {
