@@ -17,8 +17,8 @@ const output = document.getElementById("titleDifficulty");
 
 let options = ["", "", "", "", "", "", "", "", ""];
 let currentPlayer = "X";
-let gameRunning = false;
 let AIPlayer = "O";
+let gameRunning = false;
 
 function initGame() {
     cells.forEach(cell => cell.addEventListener("click", cellClicked));
@@ -78,13 +78,14 @@ function checkWinner() {
 };
 
 function continueGameMode() {
-    if (sliderValue.value == "1") {
-        changePlayer();
-    }
+    if (sliderValue.value == "1") changePlayer();
     if (sliderValue.value == "2") {
         changePlayer();
-        if (currentPlayer == AIPlayer)
-            randomMove();
+        if (currentPlayer == AIPlayer) randomMove();
+    }
+    if (sliderValue.value == "3") {
+        changePlayer();
+        console.log("work in progress");
     }
 }
 

@@ -1,8 +1,8 @@
 .background {
     background-color: #5f605d;
     left: 0;
-    width: 100vmax;
-    height: 100vmax;
+    width: 100%;
+    height: 100%;
     display: block;
     position: fixed;
     overflow: auto;
