@@ -112,7 +112,6 @@ initGame();
 
 //restart game when slider changes
 
-slider.oninput((ev) => {
-    restartGame();
-});
-//document.getElementById("difficultySlider").value = "1";
+slider.oninput = function() {restartGame()};
+
+document.getElementById("difficultySlider").value = "1";
