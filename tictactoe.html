@@ -40,10 +40,10 @@
 
         <div id="containGame">
             <div class="slidecontainer">
-                <p>Tic Tac Toe - <span id="difficultyTitle">2 Player</span></p>
-                <input type="range" min="1" max="3" value="1" id="difficultySlider" oninput="difficultyTitle.innerHTML=['2 Player','Randomiser', 'Placeholder'][Number(this.value)-1];">
+                <p>Tic Tac Toe - <span id="titleDifficulty"></span></p>
+                <input type="range" min="1" max="3" value="1" id="difficultySlider" oninput="difficultyTitle.textContent=['2 Player','Randomiser', 'Placeholder'][Number(this.value)-1];">
             </div>
-            <h1 id="titleDifficulty"></h1>
+            <h1></h1>
             <div id="containCells">
                 <div cellIndex="0" class="cell"></div>
                 <div cellIndex="1" class="cell"></div>
