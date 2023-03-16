@@ -13,8 +13,9 @@ const winConditions = [
     ];
 const slider = document.getElementById("difficultySlider");
 const output = document.getElementById("titleDifficulty");
+const maxDepth = 9;
 
-let board = ["", "", "", "", "", "", "", "", ""];
+let mainBoard = ["", "", "", "", "", "", "", "", ""];
 let currentPlayer = "X";
 let AIPlayer = "O";
 let HumanPlayer = "X";
@@ -35,16 +36,16 @@ function initGame() {
 function cellClicked() {
     const cellIndex = this.getAttribute("cellIndex");
 
-    if (board[cellIndex] != "" || !gameRunning) {
+    if (mainBoard[cellIndex] != "" || !gameRunning) {
         return;
     };
     updateCell(this, cellIndex);
 };
 
 function updateCell(cell, index) {
-    board[index] = currentPlayer;
+    mainBoard[index] = currentPlayer;
     cell.textContent = currentPlayer;
-    checkWinner();
+    checkWinner(mainBoard);
 };
 
 function changePlayer() {    
@@ -52,8 +53,9 @@ function changePlayer() {
     statusText.textContent = `${currentPlayer}'s turn`;
 };
 
-function checkWinner() {
+function checkWinner(board) {
     let roundWon = false;
+    let winner = null;
     for (let i = 0; i < winConditions.length; i++) {
         const condition = winConditions[i];
         const cellA = board[condition[0]];
@@ -65,6 +67,7 @@ function checkWinner() {
         };
         if (cellA == cellB && cellB == cellC) {
             roundWon = true;
+            winner = currentPlayer
             break;
         };
     };
@@ -73,7 +76,7 @@ function checkWinner() {
         statusText.textContent = `${currentPlayer} wins!`;
         gameRunning = false;
         cells.forEach(cell => cell.removeEventListener("click", cellClicked))
-        return currentPlayer;
+        return winner;
     } else if (!board.includes("")) {
         statusText.textContent = `draw!`;
         gameRunning = false;
@@ -91,14 +94,15 @@ function continueGameMode() {
     };
     if (Number(slider.value) === 3) {
         changePlayer();
+        let tempBoard = mainBoard.slice();
         if (currentPlayer == AIPlayer) {
             let bestMove = -1;
             let bestScore = -Infinity;
-            for (let i = 0; i < board.length; i++) {
-                if (board[i] === "") {
-                board[i] = AIPlayer;
-                let score = minimax(board, 0, false);
-                board[i] = "";
+            for (let i = 0; i < mainBoard.length; i++) {
+                if (tempBoard[i] === "") {
+                tempBoard[i] = AIPlayer;
+                let score = minimax(tempBoard, 0, false);
+                tempBoard[i] = "";
                 if (score > bestScore) {
                     bestScore = score;
                     bestMove = i;
@@ -112,7 +116,7 @@ function continueGameMode() {
 
 function restartGame() {
     currentPlayer = "X";
-    board = ["", "", "", "", "", "", "", "", ""];
+    mainBoard = ["", "", "", "", "", "", "", "", ""];
     gameRunning = true;
     statusText.textContent = `${currentPlayer}'s turn`;
     cells.forEach(cell => cell.textContent = "");
@@ -122,7 +126,7 @@ function restartGame() {
 function randomAIMove() {
     let available = [];
     for (let i = 0; i < 9; i++) {
-        if (board[i] == "") {
+        if (mainBoard[i] == "") {
             available.push(i);
         }
     }
@@ -131,9 +135,13 @@ function randomAIMove() {
 };
 
 function minimax(board, depth, isMaximizingPlayer) {
-    let result = checkWinner();
+    let result = checkWinner(board);
     if (result !== null) {
       return scores[result];
+    }
+  
+    if (depth >= maxDepth) {
+      return 0;
     }
   
     if (isMaximizingPlayer) {
@@ -161,58 +169,6 @@ function minimax(board, depth, isMaximizingPlayer) {
     }
   }
   
-
-/*function bestAIMove() {
-    if (currentPlayer !== AIPlayer) {
-        return;
-    }
-    let bestScore = -Infinity;
-    let bestMove = 0;
-    for (let i = 0; i < 9; i++) {
-        if (board[i] === "") {
-            board[i] = AIPlayer;
-            let score = Minimax(board, 0, false);
-            board[i] = "";
-            if (score > bestScore) {
-                bestScore = score;
-                bestMove = i;
-            };
-        };
-    };
-    updateCell(document.querySelector(`[cellIndex="${bestMove}"]`), bestMove);
-};
-
-function Minimax(board, isMaximising) {
-    let result = checkWinner();
-    if (result !== null) {
-        return scores[result];
-    };
-
-    if (isMaximising) {
-        let bestScore = -Infinity;
-        for (let i = 0; i < 9; i++) {
-            if (board[i] == "") {
-                board[i] = "O";
-                let score = Minimax(board, false);
-                board[i] = "";
-                bestScore = Math.max(score, bestScore);
-            };
-        };
-        return bestScore;
-    } else {
-        let bestScore = Infinity;
-        for (let i = 0; i < 9; i++) {
-            if (board[i] == "") {
-                board[i] = "X";
-                let score = Minimax(board, true);
-                board[i] = "";
-                bestScore = Math.min(score, bestScore);
-            };
-        };
-        return bestScore;
-    };
-};*/
-
 slider.oninput = function() {restartGame()};
 
 initGame();
