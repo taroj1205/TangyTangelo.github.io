@@ -54,7 +54,7 @@ function updateCell(cell, index) {
         statusText.textContent = `${currentPlayer} wins!`;
         gameRunning = false;
         cells.forEach((cell) => cell.removeEventListener("click", cellClicked));
-    } else if (!mainBoard.includes("")) {
+    } else if (!roundWon && !mainBoard.includes("")) {
         statusText.textContent = `Draw!`;
         gameRunning = false;
     } else {
@@ -67,32 +67,22 @@ function changePlayer() {
     statusText.textContent = `${currentPlayer}'s turn`;
 };
 
-function checkWinner(board) {
-    let roundWon = false;
-    let winner = null;
-    for (let i = 0; i < winConditions.length; i++) {
-        const condition = winConditions[i];
-        const cellA = board[condition[0]];
-        const cellB = board[condition[1]];
-        const cellC = board[condition[2]];
-  
-        if (cellA == "" || cellB == "" || cellC == "") {
-            continue;
-        }
-        if (cellA == cellB && cellB == cellC) {
-            roundWon = true;
-            winner = currentPlayer;
-            break;
-        }
+function checkWinner(board) {  
+  let winner = null;
+  let result = false;
+
+  for (const [a, b, c] of winConditions) {
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      winner = board[a];
     }
-  
-    if (roundWon) {
-        return winner;
-    } else if (!board.includes("")) {
-        return "tie";
-    } else {
-        return null;
-    }
+  }
+
+  if (winner) {
+    result = `${winner} wins!`;
+  } else if (board.includes("")) {
+    result = null;
+  }
+  return result;
 }
   
 function continueGameMode() {
